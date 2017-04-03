@@ -67,7 +67,7 @@ class BEAnalytics(object):
 		topResource = self.topKFrequent(resCnt,10)
 		with open(os.path.join(OUTPUT_DIR, 'resources.txt'),'w+',encoding='iso-8859-15') as resObj:
 			for res in topResource:
-				line = res[0]+','+str(res[1])+'\n'
+				line = res[0]+'\n'
 				resObj.write(line)
 		print('Get top 10 bandwidth-intensive resources successfully. Saved in resources.txt')
 
