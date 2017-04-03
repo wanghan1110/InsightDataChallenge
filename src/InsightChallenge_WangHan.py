@@ -2,6 +2,12 @@
 import re
 from collections import Counter,defaultdict,deque
 from datetime import datetime,timedelta
+import os
+
+OUTPUT_DIR = 'log_output'
+if not os.path.exists(OUTPUT_DIR):
+    os.makedirs(OUTPUT_DIR)
+
 class Log(object):
 	def __init__(self,key,host,time,httpMethod,resource,httpStatus,bandwidth,line):
 		self.key = key
@@ -47,7 +53,7 @@ class BEAnalytics(object):
 		for log in logList:
 			hostCnt[log.host]+=1
 		topHost = self.topKFrequent(hostCnt,10)
-		with open('hosts.txt','w+',encoding='iso-8859-15') as hostObj:
+		with open(os.path.join(OUTPUT_DIR, 'hosts.txt'),'w+',encoding='iso-8859-15') as hostObj:
 			for host in topHost:
 				line = host[0]+','+str(host[1])+'\n'
 				hostObj.write(line)
@@ -59,7 +65,7 @@ class BEAnalytics(object):
 			resCnt[log.resource] += log.bandwidth
 		# print('Testing:',resCnt.most_common(10))
 		topResource = self.topKFrequent(resCnt,10)
-		with open('resources.txt','w+',encoding='iso-8859-15') as resObj:
+		with open(os.path.join(OUTPUT_DIR, 'resources.txt'),'w+',encoding='iso-8859-15') as resObj:
 			for res in topResource:
 				line = res[0]+','+str(res[1])+'\n'
 				resObj.write(line)
@@ -83,7 +89,7 @@ class BEAnalytics(object):
 		# print([log.time for log in hourWdw])
 		timeCnt[hourWdw[0].time] = logList[-1].key - hourWdw[0].key + 1 
 		topHour = self.topKFrequent(timeCnt,10)
-		with open('hours.txt','w+',encoding='iso-8859-15') as hourObj:
+		with open(os.path.join(OUTPUT_DIR, 'hours.txt'),'w+',encoding='iso-8859-15') as hourObj:
 			for hour in topHour:
 				line = hour[0].strftime('%d/%b/%Y:%H:%M:%S -0400')+','+str(hour[1])+'\n'
 				hourObj.write(line)
@@ -110,7 +116,7 @@ class BEAnalytics(object):
 					tmp[log.host].append(log.time)
 				else:
 					continue
-		with open('blocked.txt','w+',encoding='utf-8') as blkObj:
+		with open(os.path.join(OUTPUT_DIR, 'blocked.txt'),'w+',encoding='utf-8') as blkObj:
 			for b in blocked:
 				blkObj.write(b.line)
 		print('Get blocked log successfully. Saved in blocked.txt')
@@ -157,7 +163,8 @@ class BEAnalytics(object):
 		heap[indx1],heap[indx2] = heap[indx2],heap[indx1]
 
 	def main(self):
-		fileName = 'log.txt'
+		import sys
+		fileName = sys.argv[1]
 		logList = self.importLog(fileName)
 		self.getTopHost(logList)
 		self.getTopResource(logList)
