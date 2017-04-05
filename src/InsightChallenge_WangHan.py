@@ -8,6 +8,7 @@ OUTPUT_DIR = 'log_output'
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
+# a log object stores all information related to one single log
 class Log(object):
 	def __init__(self,key,host,time,httpMethod,resource,httpStatus,bandwidth,line):
 		self.key = key
@@ -25,6 +26,7 @@ class Node(object):
 		self.val = val
 
 class BEAnalytics(object):
+	# import the input file. create a list of log objects.
 	def importLog(self,fileName):
 		with open(fileName,'r',encoding = 'iso-8859-15') as logObj:
 			key = 0
@@ -46,8 +48,8 @@ class BEAnalytics(object):
 			print('Total number of log:',len(logList))
 			print('Import & extraction successful. Return logList to main()')
 		return logList
-
-
+	
+	# get the top hosts. 	
 	def getTopHost(self,logList):
 		hostCnt = defaultdict(int)
 		for log in logList:
@@ -58,7 +60,8 @@ class BEAnalytics(object):
 				line = host[0]+','+str(host[1])+'\n'
 				hostObj.write(line)
 		print('Get top 10 frequent host successfully. Saved in host.txt')
-
+		
+	# get the top resources that consume bandwidth the most
 	def getTopResource(self,logList):
 		resCnt = defaultdict(int)
 		for log in logList:
@@ -70,7 +73,8 @@ class BEAnalytics(object):
 				line = res[0]+'\n'
 				resObj.write(line)
 		print('Get top 10 bandwidth-intensive resources successfully. Saved in resources.txt')
-
+	
+	# get the busiest 60 min window
 	def getTopHour(self,logList):
 		timeCnt = {}
 		hourWdw = deque()
@@ -120,6 +124,7 @@ class BEAnalytics(object):
 				hourObj.write(line)
 		print('Get top 10 busiest hour successfully. Saved in hours.txt')
 
+	# get a list of blocked IP/hosts after 3 consecutive login failure
 	def getBlocked(self,logList):
 		blocked = []
 		tmp = defaultdict(list)
@@ -146,7 +151,7 @@ class BEAnalytics(object):
 				blkObj.write(b.line)
 		print('Get blocked log successfully. Saved in blocked.txt')
 
-
+	# get the top K frequent elements. return the sorted elements in descending order to the calling function
 	def topKFrequent(self,cnt,k):
 		heap = []
 		indx = 0
@@ -162,7 +167,7 @@ class BEAnalytics(object):
 		res = sorted([(node.key,node.val) for node in heap],reverse=True,key=lambda x:x[1])
 		return res
 
-	
+	# a helper function for the topKFrequent. it pushes an element to a heap
 	def heappush(self,heap,node):
 		heap.append(node)
 		nodeInd = len(heap)-1
@@ -172,6 +177,7 @@ class BEAnalytics(object):
 			nodeInd = parentIndx
 			parentIndx = (parentIndx-1)//2
 
+	# a helper function for the topKFrequent.
 	def heapify(self,heap,indx,size):
 		left = indx*2+1
 		right = indx*2+2
@@ -183,10 +189,12 @@ class BEAnalytics(object):
 		if smallest!=indx:
 			self.swap(heap,indx,smallest)
 			self.heapify(heap,smallest,size)
-
+	
+	# a helper function for the topKElement. it swap two elements on a heap.
 	def swap(self,heap,indx1,indx2):
 		heap[indx1],heap[indx2] = heap[indx2],heap[indx1]
-
+	
+	# main function
 	def main(self):
 		import sys
 		fileName = sys.argv[1]
