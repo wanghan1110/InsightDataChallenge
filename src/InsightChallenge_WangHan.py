@@ -110,10 +110,11 @@ class BEAnalytics(object):
 				topHourWin.add((tmp+timedelta(seconds=1),tmpWin-timeFreq.get(tmp,0)+timeFreq.get(tmp+timedelta(minutes=60),0)))
 				tmpWin=tmpWin-timeFreq.get(tmp,0)+timeFreq.get(tmp+timedelta(minutes=60),0)
 				tmp+=timedelta(seconds=1)
-		
+
+		topHourWin = sorted(topHourWin,key=lambda x:x[0])
 		topHourWin = sorted(topHourWin,key=lambda x:x[1],reverse=True)
 
-		with open('hours.txt','w+',encoding='iso-8859-15') as hourObj:
+		with open(os.path.join(OUTPUT_DIR, 'hours.txt'),'w+',encoding='iso-8859-15') as hourObj:
 			for i in range(10):
 				line = topHourWin[i][0].strftime('%d/%b/%Y:%H:%M:%S -0400')+','+str(topHourWin[i][1])+'\n'
 				hourObj.write(line)
@@ -140,7 +141,7 @@ class BEAnalytics(object):
 					tmp[log.host].append(log.time)
 				else:
 					continue
-		with open(os.path.join(OUTPUT_DIR, 'blocked.txt'),'w+',encoding='utf-8') as blkObj:
+		with open(os.path.join(OUTPUT_DIR, 'blocked.txt'),'w+',encoding='iso-8859-15') as blkObj:
 			for b in blocked:
 				blkObj.write(b.line)
 		print('Get blocked log successfully. Saved in blocked.txt')
