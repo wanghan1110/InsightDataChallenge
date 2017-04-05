@@ -16,7 +16,4 @@ Detect patterns of three failed login attempts from the same IP address over 20 
 
 # Implementation details
 ### Lanuage:
-Python 3
-
-### Additional library:
-re, Counter, defaultdict, deque, datetime, timedelta, os
+Python 3.6
