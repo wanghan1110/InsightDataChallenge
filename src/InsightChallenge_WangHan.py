@@ -74,7 +74,9 @@ class BEAnalytics(object):
 	def getTopHour(self,logList):
 		timeCnt = {}
 		hourWdw = deque()
+		timeFreq = defaultdict(int)
 		for log in logList:
+			timeFreq[log.time] += 1
 			if hourWdw == deque():
 				hourWdw.append(log)
 			elif hourWdw[-1].time == log.time:
@@ -86,12 +88,34 @@ class BEAnalytics(object):
 				while hourWdw[0].time + timedelta(minutes=60) <= log.time:
 					hourWdw.popleft()
 				hourWdw.append(log)
-		# print([log.time for log in hourWdw])
-		timeCnt[hourWdw[0].time] = logList[-1].key - hourWdw[0].key + 1 
+		while hourWdw:
+			timeCnt[hourWdw[0].time] = logList[-1].key - hourWdw[0].key + 1
+			hourWdw.popleft()
+		
 		topHour = self.topKFrequent(timeCnt,10)
-		with open(os.path.join(OUTPUT_DIR, 'hours.txt'),'w+',encoding='iso-8859-15') as hourObj:
-			for hour in topHour:
-				line = hour[0].strftime('%d/%b/%Y:%H:%M:%S -0400')+','+str(hour[1])+'\n'
+		topHourWin = set()
+		
+		for i in range(len(topHour)):
+			curTime = topHour[i][0]
+			topHourWin.add(topHour[i])
+			tmp = curTime
+			tmpWin = topHour[i][1]
+			while tmp-timedelta(seconds=1)>logList[0].time and tmp-timedelta(seconds=1)not in topHourWin and (tmp - timedelta(seconds=1)) not in timeFreq:
+				topHourWin.add((tmp - timedelta(seconds=1),tmpWin-timeFreq.get(tmp+timedelta(minutes=59,seconds=59),0)))
+				tmp-=timedelta(seconds=1)
+				tmpWin -= timeFreq.get(tmp+timedelta(minutes=59,seconds=59),0)
+			tmp = curTime
+			tmpWin = topHour[i][1]
+			while tmp + timedelta(seconds=1)< logList[-1].time and tmp + timedelta(seconds=1) not in topHourWin and tmp + timedelta(seconds=1) not in timeFreq:
+				topHourWin.add((tmp+timedelta(seconds=1),tmpWin-timeFreq.get(tmp,0)+timeFreq.get(tmp+timedelta(minutes=60),0)))
+				tmpWin=tmpWin-timeFreq.get(tmp,0)+timeFreq.get(tmp+timedelta(minutes=60),0)
+				tmp+=timedelta(seconds=1)
+		
+		topHourWin = sorted(topHourWin,key=lambda x:x[1],reverse=True)
+
+		with open('hours.txt','w+',encoding='iso-8859-15') as hourObj:
+			for i in range(10):
+				line = topHourWin[i][0].strftime('%d/%b/%Y:%H:%M:%S -0400')+','+str(topHourWin[i][1])+'\n'
 				hourObj.write(line)
 		print('Get top 10 busiest hour successfully. Saved in hours.txt')
 
