@@ -209,6 +209,6 @@ class BEAnalytics(object):
 		self.getTopHour(logList)
 		self.getBlocked(logList)
 
-
-be = BEAnalytics()
-be.main()
+if __name__ == '__main__':
+	be = BEAnalytics()
+	be.main()

@@ -1,0 +1,10 @@
+/shuttle/missions/sts-70/mission-sts-70.html
+/images/NASA-logosmall.gif
+/history/apollo/apollo-spacecraft.txt
+/shuttle/resources/orbiters/endeavour.html
+/
+/images/KSC-logosmall.gif
+/shuttle/countdown/video/livevideo.gif
+/images/shuttle-patch-logo.gif
+/shuttle/missions/sts-71/images/KSC-95EC-0423.txt
+/icons/text.xbm

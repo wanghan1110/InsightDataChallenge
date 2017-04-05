@@ -1,0 +1,2 @@
+220.113.57.15 - - [01/Jul/1995:00:01:22 -0400] "POST /shuttle/missions/sts-71/images/images.html HTTP/1.0" 200 0
+220.113.57.15 - - [01/Jul/1995:00:01:23 -0400] "GET /history/apollo/images/footprint-small.gif HTTP/1.0" 401 0
