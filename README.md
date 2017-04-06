@@ -23,7 +23,7 @@ If any two resources consume same bandwidth, the resources that have earlier 'fi
 ### Feature 3:
 Data Structure: double-ended queue, hash table
 
-Time Complexity: O(N)
+Time Complexity: O(N+klog(N)), k = 10 in our case
 
 List the top 10 busiest (or most frequently visited) 60-minute periods 
 
