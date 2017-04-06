@@ -146,7 +146,7 @@ class BEAnalytics(object):
 				else:
 					continue
 			else:
-				if log.httpStatus=='401' and log.httpMethod =='POST':
+				if log.httpStatus=='401' and 'login' in log.line:
 					tmp[log.host].append(log.time)
 				else:
 					continue
