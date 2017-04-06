@@ -136,9 +136,9 @@ class BEAnalytics(object):
 			if log.host in tmp:
 				if len(tmp[log.host])==3 and tmp[log.host][-1]<tmp[log.host][0]+timedelta(seconds=20) and log.time<=tmp[log.host][-1]+timedelta(minutes=5):
 						blocked.append(log)
-				elif log.httpStatus=='200' and log.httpMethod == 'POST':
+				elif log.httpStatus=='200' and 'login' in log.line:
 					del tmp[log.host]
-				elif log.httpStatus=='401' and log.httpMethod =='POST':
+				elif log.httpStatus=='401' and 'login' in log.line:
 					# print(tmp[log.host])
 					while tmp[log.host] and log.time >= tmp[log.host][0] + timedelta(seconds=20):
 						tmp[log.host].pop(0)

@@ -1,7 +1,7 @@
 219.196.64.78 - - [01/Jul/1995:00:01:18 -0400] "GET /images/KSC-logosmall.gif HTTP/1.0" 200 1204
-220.113.57.15 - - [01/Jul/1995:00:01:19 -0400] "POST / HTTP/1.0" 401 0
-220.113.57.15 - - [01/Jul/1995:00:01:20 -0400] "POST /icons/text.xbm HTTP/1.0" 401 2
-220.113.57.15 - - [01/Jul/1995:00:01:21 -0400] "POST /shuttle/resources/orbiters/columbia.html HTTP/1.0" 401 0
+220.113.57.15 - - [01/Jul/1995:00:01:19 -0400] "POST /login HTTP/1.0" 401 0
+220.113.57.15 - - [01/Jul/1995:00:01:20 -0400] "POST /login HTTP/1.0" 401 2
+220.113.57.15 - - [01/Jul/1995:00:01:21 -0400] "POST /login HTTP/1.0" 401 0
 220.113.57.15 - - [01/Jul/1995:00:01:22 -0400] "POST /shuttle/missions/sts-71/images/images.html HTTP/1.0" 200 0
 220.113.57.15 - - [01/Jul/1995:00:01:23 -0400] "GET /history/apollo/images/footprint-small.gif HTTP/1.0" 401 0
 205.189.154.54 - - [01/Jul/1995:00:01:23 -0400] "GET /shuttle/missions/sts-71/images/KSC-95EC-0423.txt HTTP/1.0" 200 10
