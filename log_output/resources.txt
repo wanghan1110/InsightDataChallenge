@@ -7,4 +7,4 @@
 /shuttle/countdown/video/livevideo.gif
 /images/shuttle-patch-logo.gif
 /shuttle/missions/sts-71/images/KSC-95EC-0423.txt
-/icons/text.xbm
+/login
